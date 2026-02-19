@@ -15,6 +15,7 @@ public class WorkoutSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Integer sets;
     private Integer reps;
     private Double weight;
 
