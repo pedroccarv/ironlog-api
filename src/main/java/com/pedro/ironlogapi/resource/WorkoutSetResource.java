@@ -3,6 +3,7 @@ package com.pedro.ironlogapi.resource;
 import com.pedro.ironlogapi.DTO.WorkoutSetDTO;
 import com.pedro.ironlogapi.entities.WorkoutSet;
 import com.pedro.ironlogapi.service.WorkoutSetService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class WorkoutSetResource {
     }
 
     @PostMapping
-    public ResponseEntity<WorkoutSet> createWorkoutSet(@RequestBody WorkoutSet workoutSet) {
+    public ResponseEntity<WorkoutSet> createWorkoutSet(@Valid @RequestBody WorkoutSet workoutSet) {
         workoutSet = workoutSetService.createWorkoutSet(workoutSet);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(workoutSet.getId()).toUri();
         return ResponseEntity.created(uri).body(workoutSet);
@@ -46,7 +47,7 @@ public class WorkoutSetResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<WorkoutSet> updateWorkoutSet(@RequestBody WorkoutSet obj, @PathVariable Long id) {
+    public ResponseEntity<WorkoutSet> updateWorkoutSet(@Valid @RequestBody WorkoutSet obj, @PathVariable Long id) {
         obj = workoutSetService.update(id, obj);
         return ResponseEntity.ok().body(obj);
     }
