@@ -56,4 +56,8 @@ public class WorkoutService {
             throw new ResourceNotFoundException(id);
         }
     }
+
+    public List<Workout> findByUserId(Long userId) {
+        return workoutRepository.findByUserId(userId);
+    }
 }

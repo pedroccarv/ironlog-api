@@ -51,4 +51,11 @@ public class WorkoutResource {
         return ResponseEntity.ok().body(workout);
     }
 
+    @GetMapping(value = "/user/{userId}")
+    public ResponseEntity<List<WorkoutDTO>> getWorkoutsByUserId(@PathVariable Long userId) {
+        List<Workout> list = workoutService.findByUserId(userId);
+        List<WorkoutDTO> listDto = list.stream().map(WorkoutDTO::new).toList();
+        return ResponseEntity.ok().body(listDto);
+    }
+
 }
