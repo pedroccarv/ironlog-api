@@ -4,11 +4,10 @@ import com.pedro.ironlogapi.entities.Workout;
 import com.pedro.ironlogapi.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,6 +26,25 @@ public class WorkoutResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Workout> getWorkoutById(@PathVariable Long id) {
         Workout workout = workoutService.getWorkoutById(id);
+        return ResponseEntity.ok().body(workout);
+    }
+
+    @PostMapping
+    public ResponseEntity<Workout> createWorkout(@RequestBody Workout workout) {
+        workout = workoutService.createWorkout(workout);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(workout.getId()).toUri();
+        return ResponseEntity.created(uri).body(workout);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteWorkout(@PathVariable Long id) {
+        workoutService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Workout> updateWorkout(@PathVariable Long id, @RequestBody Workout workout) {
+        workout = workoutService.updateWorkout(id, workout);
         return ResponseEntity.ok().body(workout);
     }
 
