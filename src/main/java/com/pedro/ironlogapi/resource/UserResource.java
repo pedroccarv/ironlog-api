@@ -1,5 +1,6 @@
 package com.pedro.ironlogapi.resource;
 
+import com.pedro.ironlogapi.DTO.UserDTO;
 import com.pedro.ironlogapi.entities.User;
 import com.pedro.ironlogapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -19,15 +19,17 @@ public class UserResource {
     UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<UserDTO>> getUsers() {
         List<User> users = userService.findAll();
-        return ResponseEntity.ok().body(users);
+        List<UserDTO> listDto = users.stream().map(UserDTO::new).toList();
+        return ResponseEntity.ok().body(listDto);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         User user = userService.findById(id);
-        return ResponseEntity.ok().body(user);
+        UserDTO userDTO = new UserDTO(user);
+        return ResponseEntity.ok().body(userDTO);
     }
 
     @PostMapping
