@@ -1,5 +1,6 @@
 package com.pedro.ironlogapi.resource;
 
+import com.pedro.ironlogapi.DTO.WorkoutSetDTO;
 import com.pedro.ironlogapi.entities.WorkoutSet;
 import com.pedro.ironlogapi.service.WorkoutSetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,17 @@ public class WorkoutSetResource {
     private WorkoutSetService workoutSetService;
 
     @GetMapping
-    public ResponseEntity<List<WorkoutSet>> getWorkoutSets() {
+    public ResponseEntity<List<WorkoutSetDTO>> getWorkoutSets() {
         List<WorkoutSet> workoutSets = workoutSetService.getAllWorkoutSets();
-        return ResponseEntity.ok().body(workoutSets);
+        List<WorkoutSetDTO> listDto = workoutSets.stream().map(WorkoutSetDTO::new).toList();
+        return ResponseEntity.ok().body(listDto);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<WorkoutSet> getWorkoutSetById(@PathVariable Long id) {
+    public ResponseEntity<WorkoutSetDTO> getWorkoutSetById(@PathVariable Long id) {
         WorkoutSet workoutSet = workoutSetService.getWorkoutSetById(id);
-        return ResponseEntity.ok().body(workoutSet);
+        WorkoutSetDTO workoutSetDTO = new WorkoutSetDTO(workoutSet);
+        return ResponseEntity.ok().body(workoutSetDTO);
     }
 
     @PostMapping
