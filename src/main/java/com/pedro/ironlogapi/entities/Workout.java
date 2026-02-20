@@ -1,15 +1,15 @@
 package com.pedro.ironlogapi.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Table(name = "tb_workout")
 @Entity
@@ -25,5 +25,15 @@ public class Workout {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "workout")
+    private List<WorkoutSet> sets = new ArrayList<>();
+
+    public Workout(Long id, String title, Instant date, User user) {
+        this.id = id;
+        this.title = title;
+        this.date = date;
+        this.user = user;
+    }
 
 }
