@@ -24,7 +24,7 @@ public class ExerciseService {
 
     public Exercise findById(Long id) {
         Optional<Exercise> exercise = exerciseRepository.findById(id);
-        return exercise.orElseThrow(() -> new RuntimeException("Exercise not found"));
+        return exercise.orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
     }
 
     public Exercise insert(Exercise obj) {
