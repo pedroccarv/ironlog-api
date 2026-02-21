@@ -52,4 +52,10 @@ public class WorkoutSetResource {
         return ResponseEntity.ok().body(obj);
     }
 
+    @GetMapping(value = "/user/{userId}/pr/exercise/{exerciseId}")
+    public ResponseEntity<Double> getPersonalRecord(@PathVariable Long exerciseId, @PathVariable Long userId) {
+        Double pr = workoutSetService.getPersonalRecord(exerciseId, userId);
+        return ResponseEntity.ok().body(pr);
+    }
+
 }

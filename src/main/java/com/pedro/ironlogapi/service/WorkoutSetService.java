@@ -60,4 +60,9 @@ public class WorkoutSetService {
         }
     }
 
+    public Double getPersonalRecord(Long exerciseId, Long userId){
+        Double maxWeight = workoutSetRepository.findMaxWeight(exerciseId, userId);
+        return maxWeight != null ? maxWeight : 0.0;
+    }
+
 }
