@@ -18,6 +18,7 @@ public class WorkoutSetDTO implements Serializable {
     private Double weight;
     private String workoutTitle;
     private String exerciseName;
+    private Long exerciseId;
 
     public WorkoutSetDTO(WorkoutSet obj) {
         this.id = obj.getId();
@@ -26,6 +27,7 @@ public class WorkoutSetDTO implements Serializable {
         this.weight = obj.getWeight();
         this.workoutTitle = obj.getWorkout().getTitle();
         this.exerciseName = obj.getExercise().getName();
+        this.exerciseId = obj.getExercise().getId();
     }
 
 }
