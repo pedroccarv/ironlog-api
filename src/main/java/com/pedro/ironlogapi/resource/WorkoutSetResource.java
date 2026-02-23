@@ -1,6 +1,7 @@
 package com.pedro.ironlogapi.resource;
 
 import com.pedro.ironlogapi.DTO.WorkoutSetDTO;
+import com.pedro.ironlogapi.DTO.WorkoutSetRequestDTO;
 import com.pedro.ironlogapi.entities.WorkoutSet;
 import com.pedro.ironlogapi.service.WorkoutSetService;
 import jakarta.validation.Valid;
@@ -34,10 +35,10 @@ public class WorkoutSetResource {
     }
 
     @PostMapping
-    public ResponseEntity<WorkoutSet> createWorkoutSet(@Valid @RequestBody WorkoutSet workoutSet) {
-        workoutSet = workoutSetService.createWorkoutSet(workoutSet);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(workoutSet.getId()).toUri();
-        return ResponseEntity.created(uri).body(workoutSet);
+    public ResponseEntity<WorkoutSet> createWorkoutSet(@Valid @RequestBody WorkoutSetRequestDTO workoutSet) {
+        WorkoutSet created = workoutSetService.createWorkoutSet(workoutSet);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uri).body(created);
     }
 
     @DeleteMapping(value = "/{id}")

@@ -1,6 +1,11 @@
 package com.pedro.ironlogapi.service;
 
+import com.pedro.ironlogapi.DTO.WorkoutSetRequestDTO;
+import com.pedro.ironlogapi.entities.Exercise;
+import com.pedro.ironlogapi.entities.Workout;
 import com.pedro.ironlogapi.entities.WorkoutSet;
+import com.pedro.ironlogapi.repositories.ExerciseRepository;
+import com.pedro.ironlogapi.repositories.WorkoutRepository;
 import com.pedro.ironlogapi.repositories.WorkoutSetRepository;
 import com.pedro.ironlogapi.service.exceptions.DatabaseException;
 import com.pedro.ironlogapi.service.exceptions.ResourceNotFoundException;
@@ -17,6 +22,10 @@ public class WorkoutSetService {
 
     @Autowired
     private WorkoutSetRepository workoutSetRepository;
+    @Autowired
+    private WorkoutRepository workoutRepository;
+    @Autowired
+    private ExerciseRepository exerciseRepository;
 
     public List<WorkoutSet> getAllWorkoutSets() {
         return workoutSetRepository.findAll();
@@ -27,7 +36,21 @@ public class WorkoutSetService {
         return workoutSet.orElseThrow(() -> new ResourceNotFoundException("Workout Set not found"));
     }
 
-    public WorkoutSet createWorkoutSet(WorkoutSet workoutSet) {
+    public WorkoutSet createWorkoutSet(WorkoutSetRequestDTO dto) {
+        Workout workout = workoutRepository.findById(dto.getWorkoutId())
+                .orElseThrow(() -> new ResourceNotFoundException("Workout not found"));
+
+        Exercise exercise = exerciseRepository.findById(dto.getExerciseId())
+                .orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+
+        WorkoutSet workoutSet = WorkoutSet.builder()
+                .sets(dto.getSets())
+                .reps(dto.getReps())
+                .weight(dto.getWeight())
+                .workout(workout)
+                .exercise(exercise)
+                .build();
+
         return workoutSetRepository.save(workoutSet);
     }
 

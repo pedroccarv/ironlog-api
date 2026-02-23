@@ -1,14 +1,17 @@
 package com.pedro.ironlogapi.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -28,6 +31,7 @@ public class WorkoutSet {
     @PositiveOrZero(message = "O peso não pode ser negativo")
     private Double weight;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "workout_id")
     private Workout workout;
