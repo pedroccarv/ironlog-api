@@ -65,15 +65,18 @@ public class WorkoutSetService {
         }
     }
 
-    public void updateData (WorkoutSet entity, WorkoutSet obj) {
-        entity.setWorkout(obj.getWorkout());
+    public void updateData (WorkoutSet entity, WorkoutSetRequestDTO obj) {
+        Workout workout = workoutRepository.findById(obj.getWorkoutId()).orElseThrow(() -> new ResourceNotFoundException("Workout not found"));
+        Exercise exercise = exerciseRepository.findById(obj.getExerciseId()).orElseThrow(() -> new ResourceNotFoundException("Exercise not found"));
+
         entity.setSets(obj.getSets());
-        entity.setWeight(obj.getWeight());
         entity.setReps(obj.getReps());
-        entity.setExercise(obj.getExercise());
+        entity.setWeight(obj.getWeight());
+        entity.setWorkout(workout);
+        entity.setExercise(exercise);
     }
 
-    public WorkoutSet update (Long id, WorkoutSet obj) {
+    public WorkoutSet update (Long id, WorkoutSetRequestDTO obj) {
         try {
             WorkoutSet entity = workoutSetRepository.getReferenceById(id);
             updateData(entity, obj);

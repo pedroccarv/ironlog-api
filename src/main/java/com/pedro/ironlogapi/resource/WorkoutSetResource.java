@@ -48,9 +48,9 @@ public class WorkoutSetResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<WorkoutSet> updateWorkoutSet(@Valid @RequestBody WorkoutSet obj, @PathVariable Long id) {
-        obj = workoutSetService.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<WorkoutSet> updateWorkoutSet(@Valid @RequestBody WorkoutSetRequestDTO obj, @PathVariable Long id) {
+        WorkoutSet update = workoutSetService.update(id, obj);
+        return ResponseEntity.ok().body(update);
     }
 
     @GetMapping(value = "/user/{userId}/pr/exercise/{exerciseId}")
