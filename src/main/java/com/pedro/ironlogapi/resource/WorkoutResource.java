@@ -4,6 +4,7 @@ import com.pedro.ironlogapi.DTO.WorkoutDTO;
 import com.pedro.ironlogapi.entities.Workout;
 import com.pedro.ironlogapi.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -52,9 +53,15 @@ public class WorkoutResource {
     }
 
     @GetMapping(value = "/user/{userId}")
-    public ResponseEntity<List<WorkoutDTO>> getWorkoutsByUserId(@PathVariable Long userId) {
-        List<Workout> list = workoutService.findByUserId(userId);
-        List<WorkoutDTO> listDto = list.stream().map(WorkoutDTO::new).toList();
+    public ResponseEntity<Page<WorkoutDTO>> findByUserId(
+            @PathVariable Long userId,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPage", defaultValue = "10") Integer linesPerPage,
+            @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
+            @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
+
+        Page<Workout> list = workoutService.findByUserId(userId, page, linesPerPage, orderBy, direction);
+        Page<WorkoutDTO> listDto = list.map(WorkoutDTO::new);
         return ResponseEntity.ok().body(listDto);
     }
 

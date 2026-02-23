@@ -7,6 +7,9 @@ import com.pedro.ironlogapi.service.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,7 +60,8 @@ public class WorkoutService {
         }
     }
 
-    public List<Workout> findByUserId(Long userId) {
-        return workoutRepository.findByUserId(userId);
+    public Page<Workout> findByUserId(Long userId, Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return workoutRepository.findByUserId(userId, pageRequest);
     }
 }
