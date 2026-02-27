@@ -44,7 +44,7 @@ public class ExerciseService {
 
     public void updateData(Exercise entity, Exercise obj){
         entity.setName(obj.getName());
-        entity.setId(obj.getId());
+        entity.setMuscleGroup(obj.getMuscleGroup());
     }
 
     public Exercise update(Long id, Exercise obj) {
