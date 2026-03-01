@@ -55,13 +55,13 @@ public class UserServiceTest {
     @Test
     @DisplayName("Deve lancar ResourceNotFoundException quando o ID nao existir")
     void findById_ShouldThrowResourceNotFoundException_WhenIdNotExist() {
-        Long existingId = 99L;
-        when(userRepository.findById(existingId)).thenReturn(Optional.empty());
+        Long nonExistingId = 99L;
+        when(userRepository.findById(nonExistingId)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> {
-            userService.findById(existingId);
+            userService.findById(nonExistingId);
         });
-        verify(userRepository, times(1)).findById(existingId);
+        verify(userRepository, times(1)).findById(nonExistingId);
     }
 
     @Test
@@ -71,7 +71,10 @@ public class UserServiceTest {
         when(userRepository.existsById(existingId)).thenReturn(true);
         doNothing().when(userRepository).deleteById(existingId);
 
-        userService.delete(existingId);
+        assertDoesNotThrow(() -> {
+            userService.delete(existingId);
+        });
+
         verify(userRepository, times(1)).deleteById(existingId);
     }
 
@@ -141,7 +144,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Deve inserir e retornar o usuario com sucesso")
-    void insert_ShouldReturnCreatedUser_WhenIdExist() {
+    void insert_ShouldReturnCreatedUser_WhenInsertIsSuccess() {
         User newUser = new User();
         newUser.setName("Novo Usuario");
         newUser.setEmail("novo@gmail.com");
