@@ -48,6 +48,7 @@ public class WorkoutService {
     public void updateData(Workout entity, Workout obj){
         entity.setTitle(obj.getTitle());
         entity.setDate(obj.getDate());
+        entity.setSets(obj.getSets());
     }
 
     public Workout updateWorkout(Long id, Workout workout) {
