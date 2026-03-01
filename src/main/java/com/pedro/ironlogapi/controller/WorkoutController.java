@@ -1,4 +1,4 @@
-package com.pedro.ironlogapi.resource;
+package com.pedro.ironlogapi.controller;
 
 import com.pedro.ironlogapi.DTO.WorkoutDTO;
 import com.pedro.ironlogapi.entities.Workout;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/workouts")
-public class WorkoutResource {
+public class WorkoutController {
 
     @Autowired
     private WorkoutService workoutService;

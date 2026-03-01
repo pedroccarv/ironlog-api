@@ -1,4 +1,4 @@
-package com.pedro.ironlogapi.resource.exceptions;
+package com.pedro.ironlogapi.controller.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

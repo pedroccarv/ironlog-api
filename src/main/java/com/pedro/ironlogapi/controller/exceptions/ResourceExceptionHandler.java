@@ -1,4 +1,4 @@
-package com.pedro.ironlogapi.resource.exceptions;
+package com.pedro.ironlogapi.controller.exceptions;
 
 import com.pedro.ironlogapi.service.exceptions.DatabaseException;
 import com.pedro.ironlogapi.service.exceptions.ResourceNotFoundException;

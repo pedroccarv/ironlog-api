@@ -1,4 +1,4 @@
-package com.pedro.ironlogapi.resource;
+package com.pedro.ironlogapi.controller;
 
 import com.pedro.ironlogapi.DTO.UserDTO;
 import com.pedro.ironlogapi.entities.User;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/users")
-public class UserResource {
+public class UserController {
 
     @Autowired
     UserService userService;

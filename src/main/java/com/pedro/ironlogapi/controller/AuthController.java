@@ -1,4 +1,4 @@
-package com.pedro.ironlogapi.resource;
+package com.pedro.ironlogapi.controller;
 
 
 import com.pedro.ironlogapi.DTO.AuthenticationDTO;

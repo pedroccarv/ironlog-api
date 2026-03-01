@@ -1,4 +1,4 @@
-package com.pedro.ironlogapi.resource.exceptions;
+package com.pedro.ironlogapi.controller.exceptions;
 
 import java.time.Instant;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.pedro.ironlogapi.resource;
+package com.pedro.ironlogapi.controller;
 
 import com.pedro.ironlogapi.entities.Exercise;
 import com.pedro.ironlogapi.service.ExerciseService;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/exercises")
-public class ExerciseResource {
+public class ExerciseController {
 
     @Autowired
     private ExerciseService exerciseService;
