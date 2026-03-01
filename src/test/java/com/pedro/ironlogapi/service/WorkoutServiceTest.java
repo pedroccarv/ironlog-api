@@ -134,7 +134,7 @@ public class WorkoutServiceTest {
 
     @Test
     @DisplayName("Deve atualizar e retornar o treino quando o ID existir")
-    void update_ShouldReturnUpdatedExercise_WhenIdExist() {
+    void update_ShouldReturnUpdatedWorkout_WhenIdExist() {
         Long existingId = 1L;
 
         Workout workoutUpdate = new Workout();
