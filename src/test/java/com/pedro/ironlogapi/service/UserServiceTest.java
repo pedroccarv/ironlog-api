@@ -14,6 +14,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +39,39 @@ public class UserServiceTest {
         existingUser.setId(1L);
         existingUser.setName("Pedro");
         existingUser.setEmail("pedro@gmail.com");
+    }
+
+    @Test
+    @DisplayName("Deve retornar uma lista de Usuarios")
+    void findAll_ShouldReturnListOfUsers() {
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setName("Ana");
+        user2.setEmail("ana@gmail.com");
+
+        when(userRepository.findAll()).thenReturn(Arrays.asList(existingUser, user2));
+
+        List<User> result = userService.findAll();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Pedro", result.get(0).getName());
+        assertEquals("ana@gmail.com", result.get(1).getEmail());
+
+        verify(userRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("Deve retornar uma lista vazia quando nao houver usuarios")
+    void findAll_ShouldReturnListOfUsers_WhenUserNotFound() {
+        when(userRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<User> result = userService.findAll();
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        verify(userRepository, times(1)).findAll();
     }
 
     @Test

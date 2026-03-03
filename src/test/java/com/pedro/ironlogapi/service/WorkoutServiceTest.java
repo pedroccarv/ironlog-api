@@ -19,6 +19,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,40 @@ public class WorkoutServiceTest {
         workout.setUser(user);
         workoutSet.setWorkout(workout);
         workoutSet2.setWorkout(workout);
+    }
+
+    @Test
+    @DisplayName("Deve retornar uma lista de Workouts")
+    void findAll_ShouldReturnListOfWorkouts() {
+        Workout workout2 = new Workout();
+        workout2.setId(2L);
+        workout2.setTitle("Treino D");
+        workout2.setDate(Instant.now());
+        workout2.setSets(List.of(workoutSet, workoutSet2));
+
+        when(workoutRepository.findAll()).thenReturn(Arrays.asList(workout, workout2));
+
+        List<Workout> result = workoutService.getAllWorkouts();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Treino B", result.get(0).getTitle());
+        assertEquals("Treino D", result.get(1).getTitle());
+
+        verify(workoutRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("Deve retornar uma lista vazia quando nao houver workouts")
+    void findAll_ShouldReturnEmptyList_WhenWorkoutNotFound() {
+        when(workoutRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<Workout> result = workoutRepository.findAll();
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        verify(workoutRepository, times(1)).findAll();
     }
 
     @Test

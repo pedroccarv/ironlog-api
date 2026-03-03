@@ -22,6 +22,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,6 +62,41 @@ public class WorkoutSetServiceTest {
         workoutSet.setSets(3);
         workoutSet.setReps(12);
         workoutSet.setWeight(20.5);
+    }
+
+    @Test
+    @DisplayName("Deve retornar uma lista de WorkoutSet")
+    void findAll_ShouldReturnListOfWorkoutSet(){
+        WorkoutSet workoutSet2 = new WorkoutSet();
+        workoutSet2.setId(2L);
+        workoutSet2.setExercise(exercise);
+        workoutSet2.setWorkout(workout);
+        workoutSet2.setSets(5);
+        workoutSet2.setReps(20);
+        workoutSet2.setWeight(32.0);
+
+        when(workoutSetRepository.findAll()).thenReturn(Arrays.asList(workoutSet, workoutSet2));
+
+        List<WorkoutSet> result = workoutSetService.getAllWorkoutSets();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(3, result.get(0).getSets());
+        assertEquals(20, result.get(1).getReps());
+
+        verify(workoutSetRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("Deve retornar uma lista vazia quando nao houver WorkoutSet")
+    void findAll_ShouldReturnEmptyList_WhenWorkoutSetNotFound(){
+        when(workoutSetRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<WorkoutSet> result = workoutSetRepository.findAll();
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        verify(workoutSetRepository, times(1)).findAll();
     }
 
     @Test
