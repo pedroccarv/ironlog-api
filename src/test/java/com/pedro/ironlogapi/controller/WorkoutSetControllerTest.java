@@ -24,6 +24,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
+import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -50,13 +51,35 @@ public class WorkoutSetControllerTest {
 
     private WorkoutSet workoutSet;
 
+    private Workout workout;
+
+    private Exercise exercise;
+
+    private User user;
+
     @BeforeEach
     void setUp(){
-        User user = new User(1L, "Pedro", "pedro@gmail.com", "123456");
-        Workout workout = new Workout(1L, "Treino de Peito", Instant.now(), user);
-        Exercise exercise = new Exercise(1L, "Supino Reto", "Peito");
+        user = new User(1L, "Pedro", "pedro@gmail.com", "123456");
+        workout = new Workout(1L, "Treino de Peito", Instant.now(), user);
+        exercise = new Exercise(1L, "Supino Reto", "Peito");
 
         workoutSet = new WorkoutSet(1L, 3, 10, 60.0, workout, exercise);
+    }
+
+    @Test
+    @DisplayName("Deve retornar 200 OK e uma Lista de WorkoutSets")
+    void findAll_ShouldReturnListOfWorkoutSetAndStatus200() throws Exception {
+        WorkoutSet workoutSet1 = new WorkoutSet(2L, 5, 20, 15.0, workout, exercise);
+
+        when(workoutSetService.getAllWorkoutSets()).thenReturn(Arrays.asList(workoutSet, workoutSet1));
+
+        mockMvc.perform(get("/workout-sets")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].sets").value(3))
+                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].sets").value(5));
     }
 
     @Test

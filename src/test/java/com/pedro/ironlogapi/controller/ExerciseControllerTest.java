@@ -17,6 +17,8 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -46,6 +48,22 @@ public class ExerciseControllerTest {
         exercise.setId(1L);
         exercise.setName("Teste");
         exercise.setMuscleGroup("Testado");
+    }
+
+    @Test
+    @DisplayName("Deve retornar 200 OK e uma Lista de Exercicios")
+    void findAll_ShouldReturnListOfUsersAndStatus200() throws Exception {
+        Exercise exercise1 = new Exercise(2L, "Exercicio", "Exercicio Teste");
+
+        when(exerciseService.findAll()).thenReturn(List.of(exercise, exercise1));
+
+        mockMvc.perform(get("/exercises")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].name").value("Teste"))
+                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].name").value("Exercicio"));
     }
 
     @Test

@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,6 +49,22 @@ public class UserControllerTest {
         user.setName("Teste");
         user.setEmail("teste@gmail.com");
         user.setPassword("123456");
+    }
+
+    @Test
+    @DisplayName("Deve retornar 200 OK e uma lista de Usuarios")
+    void findAll_ShouldReturnListOfUsersAndStatus200() throws Exception {
+        User user2 = new User(2L, "Ana", "ana@gmail.com", "123456");
+
+        when(userService.findAll()).thenReturn(Arrays.asList(user, user2));
+
+        mockMvc.perform(get("/users")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].name").value("Teste"))
+                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].name").value("Ana"));
     }
 
     @Test

@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.Mockito.*;
 
 import java.time.Instant;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -52,6 +53,22 @@ public class WorkoutControllerTest {
     void setUp() {
         User user = new User(1L, "Teste", "teste@gmail.com", "123456");
         workout = new Workout(1L, "Treino teste", Instant.parse("2026-03-10T14:30:00Z"), user);
+    }
+
+    @Test
+    @DisplayName("Deve retornar 200 OK e uma Lista de Workouts")
+    void findAll_ShouldReturnListOfWorkoutsAndStatus200() throws Exception {
+        Workout workout1 = new Workout(2L, "Treino Lista", Instant.now(), null);
+
+        when(workoutService.getAllWorkouts()).thenReturn(List.of(workout, workout1));
+
+        mockMvc.perform(get("/workouts")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].title").value("Treino teste"))
+                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].title").value("Treino Lista"));
     }
 
     @Test
